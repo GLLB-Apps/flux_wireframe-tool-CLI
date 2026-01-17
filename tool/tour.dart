@@ -27,7 +27,7 @@ void main(List<String> args) {
   stdout.writeln('');
   stdout.writeln('Selected layout: ${layout.name}');
   stdout.writeln('Icon set: ${iconSet.name}');
-  stdout.writeln('Monospace: ${useMonospace ? 'ON' : 'OFF'}');
+  stdout.writeln('Monospace: ${useMonospace ? 'ON' : 'OFF'} (IBM Plex Mono included in wireframe_theme)');
   stdout.writeln('Title: $appTitle');
   stdout.writeln('storageKey: $storageKey');
   stdout.writeln('');
@@ -50,10 +50,8 @@ void main(List<String> args) {
     _ensureRemixDependency();
   }
 
-  // Patch pubspec för google_fonts om monospace är vald
-  if (useMonospace) {
-    _ensureGoogleFontsDependency();
-  }
+  // Note: google_fonts and IBM Plex Mono are already included in wireframe_theme
+  stdout.writeln('✓ Using wireframe_theme with IBM Plex Mono typography');
 
   // Write icons abstraction
   _writeWithBackup(
@@ -67,8 +65,6 @@ void main(List<String> args) {
     content: _mainDartTemplate(
       appTitle: appTitle,
       storageKey: storageKey,
-      useWireframeTheme: true,
-      useMonospace: useMonospace,
     ),
   );
 
@@ -99,10 +95,6 @@ void main(List<String> args) {
       break;
 
     case LayoutChoice.splitView:
-      _writeWithBackup(
-        path: 'lib/screens/home_screen.dart',
-        content: _splitViewHomeTemplate(appTitle: appTitle),
-      );
       _writeWithBackup(
         path: 'lib/screens/home_screen.dart',
         content: _splitViewHomeTemplate(appTitle: appTitle),
@@ -302,85 +294,17 @@ void _ensureRemixDependency() {
   stdout.writeln('pubspec.yaml: added remixicon: ^1.0.0');
 }
 
-void _ensureGoogleFontsDependency() {
-  final pubspec = File('pubspec.yaml');
-  if (!pubspec.existsSync()) return;
-
-  final text = pubspec.readAsStringSync();
-
-  // Already present
-  if (text.contains(RegExp(r'^\s*google_fonts\s*:', multiLine: true))) {
-    stdout.writeln('pubspec.yaml: google_fonts already present');
-    return;
-  }
-
-  // Insert after "flutter:\n    sdk: flutter" inside dependencies:
-  final lines = text.split('\n');
-  final out = <String>[];
-
-  bool inDependencies = false;
-  bool inserted = false;
-
-  for (var i = 0; i < lines.length; i++) {
-    final line = lines[i];
-    out.add(line);
-
-    if (line.trim() == 'dependencies:') {
-      inDependencies = true;
-      continue;
-    }
-
-    if (inDependencies && !inserted) {
-      final isFlutterSdkLine =
-          line.trim() == 'sdk: flutter' && i > 0 && lines[i - 1].trim() == 'flutter:';
-      if (isFlutterSdkLine) {
-        out.add('');
-        out.add('  google_fonts: ^6.2.1');
-        inserted = true;
-      }
-    }
-
-    // Leaving dependencies block
-    if (inDependencies && line.isNotEmpty && !line.startsWith(' ') && line.trim() != 'dependencies:') {
-      inDependencies = false;
-    }
-  }
-
-  pubspec.writeAsStringSync(out.join('\n'));
-  stdout.writeln('pubspec.yaml: added google_fonts: ^6.2.1');
-}
-
 /// ---------------------- TEMPLATES ----------------------
 
 String _mainDartTemplate({
   required String appTitle,
   required String storageKey,
-  required bool useWireframeTheme,
-  required bool useMonospace,
 }) {
-  final themeExpr = useWireframeTheme
-      ? (useMonospace
-          ? '_applyMonospace(WireframeTheme.getTheme(false))'
-          : 'WireframeTheme.getTheme(false)')
-      : (useMonospace
-          ? "ThemeData(useMaterial3: true, textTheme: GoogleFonts.ibmPlexMonoTextTheme())"
-          : 'ThemeData(useMaterial3: true)');
-
-  final darkThemeExpr = useWireframeTheme
-      ? (useMonospace
-          ? '_applyMonospace(WireframeTheme.getTheme(true))'
-          : 'WireframeTheme.getTheme(true)')
-      : (useMonospace
-          ? "ThemeData(useMaterial3: true, brightness: Brightness.dark, textTheme: GoogleFonts.ibmPlexMonoTextTheme(ThemeData.dark().textTheme))"
-          : 'ThemeData(useMaterial3: true, brightness: Brightness.dark)');
-
-  final needsMonospaceHelper = useWireframeTheme && useMonospace;
-
   return '''
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wireframe_theme_flutter/wireframe_theme_flutter.dart';
-${useMonospace ? "import 'package:google_fonts/google_fonts.dart';\n" : ''}
+import 'package:wireframe_theme/wireframe_theme.dart';
+
 import 'screens/home_screen.dart';
 
 Future<void> main() async {
@@ -400,15 +324,6 @@ Future<void> main() async {
 class App extends StatelessWidget {
   const App({super.key});
 
-  ${needsMonospaceHelper ? '''
-  ThemeData _applyMonospace(ThemeData t) {
-    return t.copyWith(
-      textTheme: GoogleFonts.ibmPlexMonoTextTheme(t.textTheme),
-      primaryTextTheme: GoogleFonts.ibmPlexMonoTextTheme(t.primaryTextTheme),
-    );
-  }
-  ''' : ''}
-
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ThemeController>();
@@ -416,8 +331,8 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: '$appTitle',
       debugShowCheckedModeBanner: false,
-      theme: $themeExpr,
-      darkTheme: $darkThemeExpr,
+      theme: WireframeTheme.getTheme(false),
+      darkTheme: WireframeTheme.getTheme(true),
       themeMode: theme.isDarkMode ? ThemeMode.dark : ThemeMode.light,
       home: const HomeScreen(),
     );
@@ -425,7 +340,6 @@ class App extends StatelessWidget {
 }
 ''';
 }
-
 
 String _appBarActionsTemplate() {
   return r'''
@@ -443,7 +357,7 @@ String _sidebarHomeTemplate({required String appTitle}) {
   return '''
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wireframe_theme_flutter/wireframe_theme_flutter.dart';
+import 'package:wireframe_theme/wireframe_theme.dart';
 import '../icons/app_icons.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -545,7 +459,7 @@ String _bottomNavHomeTemplate({required String appTitle}) {
   return '''
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wireframe_theme_flutter/wireframe_theme_flutter.dart';
+import 'package:wireframe_theme/wireframe_theme.dart';
 import '../icons/app_icons.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -622,7 +536,7 @@ String _gridHomeTemplate({required String appTitle}) {
   return '''
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wireframe_theme_flutter/wireframe_theme_flutter.dart';
+import 'package:wireframe_theme/wireframe_theme.dart';
 import '../icons/app_icons.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -695,7 +609,7 @@ String _splitViewHomeTemplate({required String appTitle}) {
   return '''
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wireframe_theme_flutter/wireframe_theme_flutter.dart';
+import 'package:wireframe_theme/wireframe_theme.dart';
 import '../icons/app_icons.dart';
 
 import 'detail_screen.dart';

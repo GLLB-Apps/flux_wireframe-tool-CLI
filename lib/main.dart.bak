@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wireframe_theme_flutter/wireframe_theme_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:wireframe_theme/wireframe_theme.dart';
 
 import 'screens/home_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final theme = ThemeController(storageKey: 'textat_isdarkmode');
+  final theme = ThemeController(storageKey: 'flux_wireframe_isdarkmode');
   await theme.init();
 
   runApp(
@@ -22,54 +21,15 @@ Future<void> main() async {
 class App extends StatelessWidget {
   const App({super.key});
 
-    ThemeData _applyMonospace(ThemeData t) {
-    return t.copyWith(
-      textTheme: GoogleFonts.ibmPlexMonoTextTheme(t.textTheme),
-      primaryTextTheme: GoogleFonts.ibmPlexMonoTextTheme(t.primaryTextTheme),
-    );
-  }
-
-  ThemeData _stripMonospace(ThemeData t) {
-    return t.copyWith(
-      fontFamily: null,
-      textTheme: _applyFontToTextTheme(t.textTheme, null),
-      primaryTextTheme: _applyFontToTextTheme(t.primaryTextTheme, null),
-      appBarTheme: t.appBarTheme.copyWith(
-        titleTextStyle: t.appBarTheme.titleTextStyle?.copyWith(fontFamily: null),
-      ),
-    );
-  }
-
-  TextTheme _applyFontToTextTheme(TextTheme theme, String? fontFamily) {
-    return TextTheme(
-      displayLarge: theme.displayLarge?.copyWith(fontFamily: fontFamily),
-      displayMedium: theme.displayMedium?.copyWith(fontFamily: fontFamily),
-      displaySmall: theme.displaySmall?.copyWith(fontFamily: fontFamily),
-      headlineLarge: theme.headlineLarge?.copyWith(fontFamily: fontFamily),
-      headlineMedium: theme.headlineMedium?.copyWith(fontFamily: fontFamily),
-      headlineSmall: theme.headlineSmall?.copyWith(fontFamily: fontFamily),
-      titleLarge: theme.titleLarge?.copyWith(fontFamily: fontFamily),
-      titleMedium: theme.titleMedium?.copyWith(fontFamily: fontFamily),
-      titleSmall: theme.titleSmall?.copyWith(fontFamily: fontFamily),
-      bodyLarge: theme.bodyLarge?.copyWith(fontFamily: fontFamily),
-      bodyMedium: theme.bodyMedium?.copyWith(fontFamily: fontFamily),
-      bodySmall: theme.bodySmall?.copyWith(fontFamily: fontFamily),
-      labelLarge: theme.labelLarge?.copyWith(fontFamily: fontFamily),
-      labelMedium: theme.labelMedium?.copyWith(fontFamily: fontFamily),
-      labelSmall: theme.labelSmall?.copyWith(fontFamily: fontFamily),
-    );
-  }
-  
-
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<ThemeController>();
 
     return MaterialApp(
-      title: 'TEXTAT',
+      title: 'FLUX_WIREFRAME',
       debugShowCheckedModeBanner: false,
-      theme: _applyMonospace(WireframeTheme.getTheme(false)),
-      darkTheme: _applyMonospace(WireframeTheme.getTheme(true)),
+      theme: WireframeTheme.getTheme(false),
+      darkTheme: WireframeTheme.getTheme(true),
       themeMode: theme.isDarkMode ? ThemeMode.dark : ThemeMode.light,
       home: const HomeScreen(),
     );

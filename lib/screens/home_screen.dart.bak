@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wireframe_theme_flutter/wireframe_theme_flutter.dart';
+import 'package:wireframe_theme/wireframe_theme.dart';
 import '../icons/app_icons.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,14 +18,14 @@ class _HomeScreenState extends State<HomeScreen> {
     final theme = context.watch<ThemeController>();
 
     final pages = <Widget>[
-      _Page(title: 'Home', icon: AppIcons.home),
-      _Page(title: 'Search', icon: AppIcons.search),
-      _Page(title: 'Profile', icon: AppIcons.profile),
+      _Page(title: 'Dashboard', icon: AppIcons.dashboard),
+      _Page(title: 'Inbox', icon: AppIcons.inbox),
+      _Page(title: 'Settings', icon: AppIcons.settings),
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TEXTAT'),
+        title: const Text('FLUX_WIREFRAME'),
         actions: [
   IconButton(
     tooltip: theme.isDarkMode ? 'Light mode' : 'Dark mode',
@@ -35,15 +35,32 @@ class _HomeScreenState extends State<HomeScreen> {
 ],
 
       ),
-      body: IndexedStack(index: _index, children: pages),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _index,
-        onTap: (i) => setState(() => _index = i),
-        unselectedItemColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-        items: const [
-          BottomNavigationBarItem(icon: Icon(AppIcons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(AppIcons.search), label: 'Search'),
-          BottomNavigationBarItem(icon: Icon(AppIcons.profile), label: 'Profile'),
+      body: Row(
+        children: [
+          NavigationRail(
+            selectedIndex: _index,
+            onDestinationSelected: (i) => setState(() => _index = i),
+            labelType: NavigationRailLabelType.all,
+            destinations: const [
+              NavigationRailDestination(
+                icon: Icon(AppIcons.dashboard),
+                selectedIcon: Icon(AppIcons.dashboard),
+                label: Text('Dash'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(AppIcons.inbox),
+                selectedIcon: Icon(AppIcons.inbox),
+                label: Text('Inbox'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(AppIcons.settings),
+                selectedIcon: Icon(AppIcons.settings),
+                label: Text('Settings'),
+              ),
+            ],
+          ),
+          const VerticalDivider(width: 2, thickness: 2),
+          Expanded(child: pages[_index]),
         ],
       ),
     );
@@ -69,7 +86,15 @@ class _Page extends StatelessWidget {
               const SizedBox(height: 12),
               Text(title, style: Theme.of(context).textTheme.headlineMedium),
               const SizedBox(height: 12),
-              ElevatedButton(onPressed: () {}, child: const Text('Primary action')),
+              SizedBox(
+                width: 360,
+                child: TextField(
+                  decoration: const InputDecoration(
+                    labelText: 'TextField',
+                    hintText: 'Theme smoke test…',
+                  ),
+                ),
+              ),
             ],
           ),
         ),

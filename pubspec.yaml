@@ -1,5 +1,5 @@
 name: wireframe_theme_flutter
-description: FLUX_WIREFRAME – Flutter Wireframe Starter Tool
+description: FLUX Wireframe CLI – Flutter UI Experience starter template with wireframe aesthetic
 version: 1.0.0+1
 publish_to: none
 
@@ -10,21 +10,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  google_fonts: ^6.2.1
-
-  remixicon: ^1.0.0
-
+  
+  # Wireframe theme from pub.dev
+  wireframe_theme: ^1.0.4
+  
+  # State management and persistence
   provider: ^6.1.1
   shared_preferences: ^2.2.2
-  permission_handler: ^11.0.1
-
-  wireframe_theme_flutter:
-    git:
-      url: https://github.com/GLLB-Apps/wireframe_theme_flutter.git
-      ref: v1.0.2
-
+  
+  # Optional icon sets
+  remixicon: ^1.0.0
   cupertino_icons: ^1.0.2
+  
+  # Permissions (if needed by your app)
+  permission_handler: ^11.0.1
 
 flutter:
   uses-material-design: true
