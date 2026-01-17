@@ -135,7 +135,8 @@ LayoutChoice _askLayout() {
     stdout.writeln('  b) Bottom navbar');
     stdout.writeln('  c) Grid');
     stdout.writeln('  d) Split view');
-    stdout.write('Select (a/b/c/d): ');
+    stdout.writeln('  0) Exit');
+    stdout.write('Select (a/b/c/d/0): ');
 
     final input = stdin.readLineSync()?.trim().toLowerCase();
     switch (input) {
@@ -147,6 +148,14 @@ LayoutChoice _askLayout() {
         return LayoutChoice.grid;
       case 'd':
         return LayoutChoice.splitView;
+      case '0':
+      case 'exit':
+      case 'quit':
+      case 'q':
+        stdout.writeln('');
+        stdout.writeln('Goodbye! 👋');
+        stdout.writeln('');
+        exit(0);
       default:
         stdout.writeln('Invalid choice. Try again.\n');
     }
@@ -158,32 +167,57 @@ IconSetChoice _askIconSet() {
     stdout.writeln('\nIcon set:');
     stdout.writeln('  m) Material (default)');
     stdout.writeln('  r) Remix');
-    stdout.write('Select (m/r): ');
+    stdout.writeln('  0) Exit');
+    stdout.write('Select (m/r/0): ');
 
     final input = stdin.readLineSync()?.trim().toLowerCase();
     if (input == null || input.isEmpty || input == 'm') return IconSetChoice.material;
     if (input == 'r') return IconSetChoice.remix;
+    if (input == '0' || input == 'exit' || input == 'quit' || input == 'q') {
+      stdout.writeln('');
+      stdout.writeln('Goodbye! 👋');
+      stdout.writeln('');
+      exit(0);
+    }
 
     stdout.writeln('Invalid choice. Try again.\n');
   }
 }
 
 String _askString({required String prompt, required String defaultValue}) {
-  stdout.write('$prompt [$defaultValue]: ');
-  final input = stdin.readLineSync();
-  final v = (input ?? '').trim();
-  return v.isEmpty ? defaultValue : v;
+  while (true) {
+    stdout.write('$prompt [$defaultValue] (or "0" to exit): ');
+    final input = stdin.readLineSync();
+    final v = (input ?? '').trim();
+    
+    if (v == '0' || v.toLowerCase() == 'exit' || v.toLowerCase() == 'quit') {
+      stdout.writeln('');
+      stdout.writeln('Goodbye! 👋');
+      stdout.writeln('');
+      exit(0);
+    }
+    
+    return v.isEmpty ? defaultValue : v;
+  }
 }
 
 bool _askYesNo(String prompt, {required bool defaultYes}) {
   final def = defaultYes ? 'Y/n' : 'y/N';
   while (true) {
-    stdout.write('$prompt [$def]: ');
+    stdout.write('$prompt [$def] (or "0" to exit): ');
     final input = stdin.readLineSync()?.trim().toLowerCase();
+    
+    if (input == '0' || input == 'exit' || input == 'quit' || input == 'q') {
+      stdout.writeln('');
+      stdout.writeln('Goodbye! 👋');
+      stdout.writeln('');
+      exit(0);
+    }
+    
     if (input == null || input.isEmpty) return defaultYes;
     if (input == 'y' || input == 'yes') return true;
     if (input == 'n' || input == 'no') return false;
-    stdout.writeln('Please answer y or n.');
+    stdout.writeln('Please answer y or n (or 0 to exit).');
   }
 }
 
