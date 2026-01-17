@@ -21,8 +21,9 @@ dev_dependencies:
   test: ^1.25.0
 
 executables:
-  flux_wireframe: run              # Huvudkommando - interaktiv meny
-  flux_wireframe_tour: tour        # Direktkommando för tour
-  flux_wireframe_status: status
-  flux_wireframe_doctor: doctor
-  flux_wireframe_clear: clear
+  executables:
+  flux_wireframe: tool/run
+  flux_wireframe_tour: tool/tour
+  flux_wireframe_status: tool/status
+  flux_wireframe_doctor: tool/doctor
+  flux_wireframe_clear: tool/clear
