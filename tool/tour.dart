@@ -4,14 +4,17 @@ enum LayoutChoice { sidebar, bottomNav, grid, splitView }
 enum IconSetChoice { material, remix }
 
 void main(List<String> args) {
-  stdout.writeln('FLUX_WIREFRAME – Starter Tour');
+  stdout.writeln('═══════════════════════════════════════════════════════');
+  stdout.writeln('  FLUX Wireframe CLI');
+  stdout.writeln('  Flutter UI Experience - Wireframe');
+  stdout.writeln('═══════════════════════════════════════════════════════');
+  stdout.writeln('');
   stdout.writeln('This will overwrite lib/main.dart and create screens.');
   stdout.writeln('Tip: revert quickly with git or your reset tool.');
   stdout.writeln('');
 
   final layout = _askLayout();
   final iconSet = _askIconSet();
-  final useMonospace = _askYesNo('Use monospace typography?', defaultYes: true);
 
   final appTitle = _askString(
     prompt: 'App title (shown in AppBar)',
@@ -27,7 +30,7 @@ void main(List<String> args) {
   stdout.writeln('');
   stdout.writeln('Selected layout: ${layout.name}');
   stdout.writeln('Icon set: ${iconSet.name}');
-  stdout.writeln('Monospace: ${useMonospace ? 'ON' : 'OFF'} (IBM Plex Mono included in wireframe_theme)');
+  stdout.writeln('Typography: IBM Plex Mono (included in wireframe_theme)');
   stdout.writeln('Title: $appTitle');
   stdout.writeln('storageKey: $storageKey');
   stdout.writeln('');
@@ -42,6 +45,12 @@ void main(List<String> args) {
   Directory('lib/screens').createSync(recursive: true);
   Directory('lib/icons').createSync(recursive: true);
 
+  stdout.writeln('');
+  stdout.writeln('Updating pubspec.yaml...');
+  
+  // CRITICAL: Add wireframe_theme and dependencies FIRST
+  _ensureWireframeThemeDependency();
+  
   // Ensure Material icon font is bundled (prevents "square" icons)
   _ensureMaterialDesignEnabled();
 
@@ -50,8 +59,8 @@ void main(List<String> args) {
     _ensureRemixDependency();
   }
 
-  // Note: google_fonts and IBM Plex Mono are already included in wireframe_theme
-  stdout.writeln('✓ Using wireframe_theme with IBM Plex Mono typography');
+  stdout.writeln('');
+  stdout.writeln('Generating code...');
 
   // Write icons abstraction
   _writeWithBackup(
@@ -107,10 +116,14 @@ void main(List<String> args) {
   }
 
   stdout.writeln('');
-  stdout.writeln('Done ✅');
+  stdout.writeln('═══════════════════════════════════════════════════════');
+  stdout.writeln('  ✅ Done!');
+  stdout.writeln('═══════════════════════════════════════════════════════');
+  stdout.writeln('');
   stdout.writeln('Next steps:');
-  stdout.writeln('  flutter pub get');
-  stdout.writeln('  flutter run');
+  stdout.writeln('  1. flutter pub get');
+  stdout.writeln('  2. flutter run');
+  stdout.writeln('');
 }
 
 /// ---------------------- PROMPTS ----------------------
@@ -217,6 +230,81 @@ String _slugify(String s) {
 
 /// ---------------------- PUBSPEC PATCHES ----------------------
 
+void _ensureWireframeThemeDependency() {
+  final pubspec = File('pubspec.yaml');
+  if (!pubspec.existsSync()) {
+    stdout.writeln('⚠ Warning: pubspec.yaml not found - please add wireframe_theme manually');
+    return;
+  }
+
+  final text = pubspec.readAsStringSync();
+
+  // Check if wireframe_theme already exists
+  if (text.contains(RegExp(r'^\s*wireframe_theme\s*:', multiLine: true))) {
+    stdout.writeln('✓ pubspec.yaml: wireframe_theme already present');
+    return;
+  }
+
+  // Check if provider and shared_preferences exist  
+  final hasProvider = text.contains(RegExp(r'^\s*provider\s*:', multiLine: true));
+  final hasSharedPrefs = text.contains(RegExp(r'^\s*shared_preferences\s*:', multiLine: true));
+
+  final lines = text.split('\n');
+  final out = <String>[];
+
+  bool inDependencies = false;
+  bool inserted = false;
+
+  for (var i = 0; i < lines.length; i++) {
+    final line = lines[i];
+    out.add(line);
+
+    if (line.trim() == 'dependencies:') {
+      inDependencies = true;
+      continue;
+    }
+
+    if (inDependencies && !inserted) {
+      final isFlutterSdkLine =
+          line.trim() == 'sdk: flutter' && i > 0 && lines[i - 1].trim() == 'flutter:';
+      if (isFlutterSdkLine) {
+        out.add('');
+        out.add('  # Wireframe theme from pub.dev');
+        out.add('  wireframe_theme: ^1.0.4');
+        
+        if (!hasProvider) {
+          out.add('');
+          out.add('  # State management');
+          out.add('  provider: ^6.0.0');
+        }
+        
+        if (!hasSharedPrefs) {
+          out.add('');
+          out.add('  # Persistent storage');
+          out.add('  shared_preferences: ^2.0.0');
+        }
+        
+        // ALWAYS add cupertino_icons for iOS compatibility
+        out.add('');
+        out.add('  # iOS icons');
+        out.add('  cupertino_icons: ^1.0.8');
+        
+        inserted = true;
+      }
+    }
+
+    if (inDependencies && line.isNotEmpty && !line.startsWith(' ') && line.trim() != 'dependencies:') {
+      inDependencies = false;
+    }
+  }
+
+  pubspec.writeAsStringSync(out.join('\n'));
+  stdout.writeln('✓ pubspec.yaml: added wireframe_theme: ^1.0.4');
+  if (!hasProvider) stdout.writeln('✓ pubspec.yaml: added provider: ^6.0.0');
+  if (!hasSharedPrefs) stdout.writeln('✓ pubspec.yaml: added shared_preferences: ^2.0.0');
+  stdout.writeln('✓ pubspec.yaml: added cupertino_icons: ^1.0.8');
+}
+
 void _ensureMaterialDesignEnabled() {
   final pubspec = File('pubspec.yaml');
   if (!pubspec.existsSync()) return;
@@ -224,8 +312,8 @@ void _ensureMaterialDesignEnabled() {
   final text = pubspec.readAsStringSync();
 
   // Already set
-  if (text.contains(RegExp(r'^\s*uses-material-design\s*:\s*true\s*$', multiLine: true))) {
-    stdout.writeln('pubspec.yaml: uses-material-design already true');
+  if (text.contains(RegExp(r'^\s*uses-material-design\s*:\s*true', multiLine: true))) {
+    stdout.writeln('✓ pubspec.yaml: uses-material-design already true');
     return;
   }
 
@@ -236,14 +324,14 @@ void _ensureMaterialDesignEnabled() {
       'flutter:\n  uses-material-design: true',
     );
     pubspec.writeAsStringSync(updated);
-    stdout.writeln('pubspec.yaml: added uses-material-design: true');
+    stdout.writeln('✓ pubspec.yaml: added uses-material-design: true');
     return;
   }
 
   // Otherwise append flutter section at end
   final updated = text.trimRight() + '\n\nflutter:\n  uses-material-design: true\n';
   pubspec.writeAsStringSync(updated);
-  stdout.writeln('pubspec.yaml: appended flutter: uses-material-design: true');
+  stdout.writeln('✓ pubspec.yaml: added flutter section with uses-material-design: true');
 }
 
 void _ensureRemixDependency() {
@@ -254,7 +342,7 @@ void _ensureRemixDependency() {
 
   // Already present
   if (text.contains(RegExp(r'^\s*remixicon\s*:', multiLine: true))) {
-    stdout.writeln('pubspec.yaml: remixicon already present');
+    stdout.writeln('✓ pubspec.yaml: remixicon already present');
     return;
   }
 
@@ -279,6 +367,7 @@ void _ensureRemixDependency() {
           line.trim() == 'sdk: flutter' && i > 0 && lines[i - 1].trim() == 'flutter:';
       if (isFlutterSdkLine) {
         out.add('');
+        out.add('  # Remix icons');
         out.add('  remixicon: ^1.0.0');
         inserted = true;
       }
@@ -291,7 +380,7 @@ void _ensureRemixDependency() {
   }
 
   pubspec.writeAsStringSync(out.join('\n'));
-  stdout.writeln('pubspec.yaml: added remixicon: ^1.0.0');
+  stdout.writeln('✓ pubspec.yaml: added remixicon: ^1.0.0');
 }
 
 /// ---------------------- TEMPLATES ----------------------

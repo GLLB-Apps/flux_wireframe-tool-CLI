@@ -1,29 +1,24 @@
-name: wireframe_theme_flutter
-description: FLUX Wireframe CLI – Flutter UI Experience starter template with wireframe aesthetic
-version: 1.0.0+1
-publish_to: none
+name: flux_wireframe_theme_cli
+description: Flutter UI Experience CLI - Wireframe. Scaffold Flutter apps with wireframe aesthetic, IBM Plex Mono typography, and dark mode support.
+version: 1.1.0
+publish_to: https://pub.dev
+
+homepage: https://github.com/GLLB-Apps/flux_wireframe-tool-CLI
+repository: https://github.com/GLLB-Apps/flux_wireframe-tool-CLI
+issue_tracker: https://github.com/GLLB-Apps/flux_wireframe-tool-CLI/issues
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
-  flutter: '>=3.10.0'
+
+executables:
+  flux_wireframe: tour
 
 dependencies:
-  flutter:
-    sdk: flutter
-  
-  # Wireframe theme from pub.dev
-  wireframe_theme: ^1.0.4
-  
-  # State management and persistence
-  provider: ^6.1.1
-  shared_preferences: ^2.2.2
-  
-  # Optional icon sets
-  remixicon: ^1.0.0
-  cupertino_icons: ^1.0.2
-  
-  # Permissions (if needed by your app)
-  permission_handler: ^11.0.1
+  args: ^2.4.0
+  path: ^1.8.0
+
+dev_dependencies:
+  lints: ^2.0.0
 
 flutter:
   uses-material-design: true

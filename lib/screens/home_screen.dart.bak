@@ -1,101 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:wireframe_theme/wireframe_theme.dart';
 import '../icons/app_icons.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int _index = 0;
-
-  @override
   Widget build(BuildContext context) {
-    final theme = context.watch<ThemeController>();
-
-    final pages = <Widget>[
-      _Page(title: 'Dashboard', icon: AppIcons.dashboard),
-      _Page(title: 'Inbox', icon: AppIcons.inbox),
-      _Page(title: 'Settings', icon: AppIcons.settings),
-    ];
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FLUX_WIREFRAME'),
-        actions: [
-  IconButton(
-    tooltip: theme.isDarkMode ? 'Light mode' : 'Dark mode',
-    icon: Icon(theme.isDarkMode ? AppIcons.lightMode : AppIcons.darkMode),
-    onPressed: () => context.read<ThemeController>().toggle(),
-  ),
-],
-
+        title: const Text('Native reset'),
       ),
-      body: Row(
-        children: [
-          NavigationRail(
-            selectedIndex: _index,
-            onDestinationSelected: (i) => setState(() => _index = i),
-            labelType: NavigationRailLabelType.all,
-            destinations: const [
-              NavigationRailDestination(
-                icon: Icon(AppIcons.dashboard),
-                selectedIcon: Icon(AppIcons.dashboard),
-                label: Text('Dash'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(AppIcons.inbox),
-                selectedIcon: Icon(AppIcons.inbox),
-                label: Text('Inbox'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(AppIcons.settings),
-                selectedIcon: Icon(AppIcons.settings),
-                label: Text('Settings'),
-              ),
-            ],
-          ),
-          const VerticalDivider(width: 2, thickness: 2),
-          Expanded(child: pages[_index]),
-        ],
-      ),
-    );
-  }
-}
-
-class _Page extends StatelessWidget {
-  const _Page({required this.title, required this.icon});
-
-  final String title;
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, size: 48),
-              const SizedBox(height: 12),
-              Text(title, style: Theme.of(context).textTheme.headlineMedium),
-              const SizedBox(height: 12),
-              SizedBox(
-                width: 360,
-                child: TextField(
-                  decoration: const InputDecoration(
-                    labelText: 'TextField',
-                    hintText: 'Theme smoke test…',
-                  ),
+      body: Center(
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(AppIcons.home, size: 48),
+                const SizedBox(height: 12),
+                Text(
+                  'Reset successful',
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
-              ),
-            ],
+                const SizedBox(height: 8),
+                const Text('You are back on native Material 3.'),
+              ],
+            ),
           ),
         ),
       ),
