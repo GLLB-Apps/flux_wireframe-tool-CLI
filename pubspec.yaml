@@ -4,26 +4,20 @@ version: 0.1.0
 homepage: https://github.com/GLLB-Apps/flux_wireframe-tool-CLI
 repository: https://github.com/GLLB-Apps/flux_wireframe-tool-CLI
 
-# TA BORT DENNA RAD för att kunna publicera:
-# publish_to: 'none'
-
 environment:
   sdk: ^3.6.1
 
 dependencies:
-  # För CLI-verktyg behöver du INTE Flutter
-  # Använd bara dart dependencies:
   args: ^2.5.0
-  # Lägg till andra dependencies du använder
+  path: ^1.9.0
+  io: ^1.0.4
 
 dev_dependencies:
   lints: ^4.0.0
-  test: ^1.25.0
 
 executables:
-  executables:
-  flux_wireframe: tool/run
-  flux_wireframe_tour: tool/tour
-  flux_wireframe_status: tool/status
-  flux_wireframe_doctor: tool/doctor
-  flux_wireframe_clear: tool/clear
+  flux_wireframe: run
+  flux_wireframe_tour: tour
+  flux_wireframe_status: status
+  flux_wireframe_doctor: doctor
+  flux_wireframe_clear: clear
