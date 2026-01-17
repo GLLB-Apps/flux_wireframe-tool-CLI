@@ -1,6 +1,6 @@
 {
-    "name": "flutter_starter",
-    "short_name": "flutter_starter",
+    "name": "flux_wireframe_theme_cli",
+    "short_name": "flux_wireframe_theme_cli",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

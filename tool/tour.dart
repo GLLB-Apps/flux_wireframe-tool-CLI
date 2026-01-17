@@ -329,7 +329,7 @@ void _ensureMaterialDesignEnabled() {
   }
 
   // Otherwise append flutter section at end
-  final updated = text.trimRight() + '\n\nflutter:\n  uses-material-design: true\n';
+  final updated = '${text.trimRight()}\n\nflutter:\n  uses-material-design: true\n';
   pubspec.writeAsStringSync(updated);
   stdout.writeln('✓ pubspec.yaml: added flutter section with uses-material-design: true');
 }

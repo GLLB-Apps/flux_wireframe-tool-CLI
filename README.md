@@ -1,177 +1,314 @@
-# FLUX_WIREFRAME – Starter Tour
+# FLUX Wireframe CLI
+
+**Flutter UI Experience - Wireframe**
 
 A powerful CLI tool for scaffolding Flutter applications with a beautiful wireframe aesthetic. Get a production-ready app with dark mode, custom layouts, and professional theming in seconds.
 
+[![pub package](https://img.shields.io/pub/v/flux_wireframe_theme_cli.svg)](https://pub.dev/packages/flux_wireframe_theme_cli)
+
 ## ✨ Features
 
-- 🎨 **4 Professional Layouts**: Sidebar, Bottom Navigation, Grid, and Split View
-- 🌓 **Dark Mode**: Built-in theme switching with persistent state
-- 🔤 **IBM Plex Mono**: Optional Google Fonts integration for that authentic wireframe look
-- 🎯 **Icon Sets**: Choose between Material Icons or Remix Icons
-- 📱 **Responsive Design**: Adaptive layouts with smart breakpoints
-- 🔒 **Safe**: Automatic backups of existing files
-- ⚡ **Fast**: Complete project setup in ~30 seconds
+- 🎯 **Interactive Menu** - Easy-to-use guided interface for all commands
+- 🎨 **4 Professional Layouts** - Sidebar, Bottom Navigation, Grid, and Split View
+- 🌓 **Dark Mode** - Built-in theme switching with persistent state
+- 🔤 **IBM Plex Mono** - Professional monospace typography via Google Fonts
+- 🎨 **Icon Sets** - Choose between Material Icons or Remix Icons
+- 📱 **Responsive Design** - Adaptive layouts with smart breakpoints
+- 🔒 **Safe** - Automatic backups of existing files
+- ⚡ **Fast** - Complete project setup in ~30 seconds
+- 🏥 **Health Check** - Built-in doctor and status commands
+- 🧹 **Clean Reset** - One command to reset to clean Flutter project
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- Flutter SDK (latest stable)
-- Dart SDK
-- A Flutter project initialized with `flutter create`
-
 ### Installation
-
-1. Copy `tour.dart` to your Flutter project root
-2. Run the tool:
 ```bash
-dart run tour.dart
+dart pub global activate flux_wireframe_theme_cli
 ```
 
-### Interactive Setup
-
-The tool will guide you through configuration:
+### Usage
+```bash
+# Interactive menu (recommended)
+flux_wireframe
 ```
-FLUX_WIREFRAME – Starter Tour
-This will overwrite lib/main.dart and create screens.
 
+**Menu options:**
+```
+═══════════════════════════════════════════════════════
+  FLUX Wireframe CLI
+  Flutter UI Experience - Wireframe
+═══════════════════════════════════════════════════════
+
+Available commands:
+
+  1) tour       - Interactive project setup wizard
+  2) status     - Show project status
+  3) doctor     - Check environment health
+  4) clear      - Reset to clean Flutter project
+
+  0) exit       - Exit FLUX CLI
+
+Select option (0-4):
+```
+
+### Quick Commands
+```bash
+# Run commands directly
+flux_wireframe tour        # Interactive setup wizard
+flux_wireframe status      # Project status
+flux_wireframe doctor      # Environment health check
+flux_wireframe clear       # Reset project
+```
+
+### Individual Commands
+```bash
+flux_wireframe_tour        # Interactive setup wizard
+flux_wireframe_status      # Project status
+flux_wireframe_doctor      # Environment check
+flux_wireframe_clear       # Reset project
+```
+
+## 📐 Available Commands
+
+### 🎯 Tour - Interactive Setup Wizard
+
+The main scaffolding wizard that guides you through project setup:
+```bash
+flux_wireframe tour
+```
+
+**Interactive prompts:**
+```
 Choose layout:
   a) Sidebar
   b) Bottom navbar
   c) Grid
   d) Split view
-Select (a/b/c/d): b
+Select (a/b/c/d): 
 
 Icon set:
   m) Material (default)
   r) Remix
-Select (m/r): m
+Select (m/r): 
 
-Use monospace typography? [Y/n]: Y
-
-App title (shown in AppBar) [FLUX_WIREFRAME]: MyApp
+App title (shown in AppBar) [FLUX_WIREFRAME]: 
 
 Theme storageKey (SharedPreferences) [myapp_isDarkMode]: 
-
-Selected layout: bottomNav
-Icon set: material
-Monospace: ON
-Title: MyApp
-storageKey: myapp_isDarkMode
-
-Proceed and overwrite files? [Y/n]: Y
 ```
 
-### Finish Setup
+**What it does:**
+- ✅ Creates `lib/main.dart` with theme setup
+- ✅ Generates `lib/screens/` with chosen layout
+- ✅ Creates `lib/icons/app_icons.dart` abstraction
+- ✅ Adds required dependencies to `pubspec.yaml`
+- ✅ Backs up existing files as `.bak`
+- ✅ Enables Material Design icons
+
+### 📊 Status - Project Overview
+
+Shows comprehensive project status:
 ```bash
-flutter pub get
-flutter run
+flux_wireframe status
 ```
+
+**Example output:**
+```
+📦 Project: my_awesome_app
+📌 Version: 1.0.0+1
+
+Dependencies:
+  ✓ wireframe_theme
+  ✓ provider
+  ✓ shared_preferences
+  ○ remixicon (optional)
+  ✓ cupertino_icons (optional)
+
+Generated files:
+  ✓ lib/main.dart
+  ✓ lib/screens/
+     └─ 1 screen(s)
+        • home_screen.dart
+  ✓ lib/icons/
+     └─ 1 icon file(s)
+
+═══════════════════════════════════════════════════════
+  ✅ FLUX Wireframe project - fully scaffolded
+═══════════════════════════════════════════════════════
+```
+
+### 🏥 Doctor - Environment Health Check
+
+Diagnoses your development environment:
+```bash
+flux_wireframe doctor
+```
+
+**Checks:**
+- ✓ Flutter installation and version
+- ✓ Dart SDK availability
+- ✓ Valid Flutter project
+- ✓ Required dependencies
+- ✓ FLUX generated files
+- ✓ Material Design icons setup
+
+**Example output:**
+```
+Checking Flutter... ✓
+  Flutter 3.16.0 • channel stable
+
+Checking Dart... ✓
+  Dart 3.2.0 (stable)
+
+Checking Flutter project... ✓
+  Project: my_app
+
+Checking wireframe_theme... ✓ installed
+
+═══════════════════════════════════════════════════════
+  ✅ Everything looks good!
+═══════════════════════════════════════════════════════
+```
+
+### 🧹 Clear - Reset Project
+
+Resets project to clean Flutter state:
+```bash
+flux_wireframe clear
+```
+
+**What it does:**
+- ⚠️ Deletes `lib/main.dart`
+- ⚠️ Removes `lib/screens/` directory
+- ⚠️ Removes `lib/icons/` directory
+- ⚠️ Deletes all `.bak` backup files
+- ✅ Runs `flutter create . --overwrite` automatically
+- ✅ Creates fresh Flutter counter app
+
+**⚠️ Warning:** This action cannot be undone! Commit to git first.
 
 ## 📐 Layouts
 
-### Sidebar
-Desktop-first layout with NavigationRail and multiple content pages.
-- **Best for**: Admin dashboards, content management systems
-- **Breakpoint**: Always displays sidebar
+### Sidebar Navigation
+Desktop-first layout with NavigationRail.
 
-### Bottom Navigation
+**Best for:** Admin dashboards, content management systems, desktop apps
+
+**Features:**
+- Persistent sidebar navigation
+- Multiple content pages
+- Material NavigationRail component
+
+### Bottom Navigation Bar
 Mobile-friendly layout with BottomNavigationBar.
-- **Best for**: Mobile apps, social media, e-commerce
-- **Features**: IndexedStack for state preservation
 
-### Grid
-Responsive grid layout with automatic column adjustment.
-- **Best for**: Portfolios, product catalogs, image galleries
-- **Breakpoints**: 
-  - 1100px+ → 4 columns
-  - 800px+ → 3 columns
-  - 520px+ → 2 columns
-  - <520px → 1 column
+**Best for:** Mobile apps, social media apps, e-commerce
 
-### Split View
-Master-detail layout with adaptive behavior.
-- **Best for**: Email clients, file browsers, settings panels
-- **Breakpoint**: 840px
-  - Wide screens: Side-by-side view
-  - Narrow screens: Navigation with detail push
+**Features:**
+- 3-tab navigation
+- IndexedStack for state preservation
+- Mobile-optimized touch targets
+
+### Grid Layout
+Responsive grid with automatic column adjustment.
+
+**Best for:** Portfolios, product catalogs, image galleries
+
+**Breakpoints:**
+- `≥1100px` → 4 columns
+- `≥800px` → 3 columns
+- `≥520px` → 2 columns
+- `<520px` → 1 column
+
+### Split View (Master-Detail)
+Adaptive layout with master-detail pattern.
+
+**Best for:** Email clients, file browsers, settings panels
+
+**Features:**
+- Side-by-side view on wide screens (≥840px)
+- Stack navigation on narrow screens
+- 25 sample items included
 
 ## 🎨 Theming
 
-### WireframeTheme Package
+### Wireframe Theme Package
 
-The tool uses the `wireframe_theme_flutter` package which provides:
+Uses [`wireframe_theme`](https://pub.dev/packages/wireframe_theme) which provides:
 
-- Monochromatic color scheme (black/white)
-- 2px borders on all components
-- Zero elevation/shadows
-- Sharp corners (no border radius)
-- Clean, minimal aesthetic
+- ✨ Monochromatic color scheme (black/white)
+- 🔤 IBM Plex Mono typography
+- 📏 2px borders on all components
+- 🚫 Zero elevation/shadows
+- ⬜ Sharp corners (no border radius)
+- 🎯 Clean, minimal aesthetic
 
-### Dark Mode
+### Dark Mode Support
 
-Toggle between light and dark themes with persistent state:
+Built-in theme switching with persistent storage:
 ```dart
-IconButton(
-  icon: Icon(theme.isDarkMode ? AppIcons.lightMode : AppIcons.darkMode),
-  onPressed: () => context.read<ThemeController>().toggle(),
-)
+// Toggle dark mode
+context.read().toggle();
+
+// Check current mode
+final isDark = context.watch().isDarkMode;
+
+// Access colors
+final foreground = WireframeTheme.getForeground(isDark);
+final background = WireframeTheme.getBackground(isDark);
 ```
 
-State persists across app restarts via SharedPreferences.
+**Persistence:** Theme preference is saved using SharedPreferences and persists across app restarts.
 
-### IBM Plex Mono (Optional)
-
-When enabled, applies Google Fonts IBM Plex Mono globally:
-```dart
-ThemeData _applyMonospace(ThemeData t) {
-  return t.copyWith(
-    textTheme: GoogleFonts.ibmPlexMonoTextTheme(t.textTheme),
-    primaryTextTheme: GoogleFonts.ibmPlexMonoTextTheme(t.primaryTextTheme),
-  );
-}
-```
-
-## 📦 Generated Files
+## 📦 Generated Project Structure
 ```
 lib/
-├── main.dart                    # App entry point with theme setup
+├── main.dart                    # App entry point
+│   ├── ThemeController setup
+│   ├── Provider configuration
+│   └── MaterialApp with themes
+│
 ├── icons/
 │   └── app_icons.dart          # Icon abstraction layer
+│       ├── Material OR Remix icons
+│       └── Consistent API
+│
 └── screens/
-    ├── home_screen.dart        # Layout-specific home screen
-    └── detail_screen.dart      # (Split view only)
+    ├── home_screen.dart        # Main screen (layout-specific)
+    └── detail_screen.dart      # Detail screen (split view only)
 ```
 
 ### Backup System
 
-Before overwriting, the tool creates `.bak` files:
+Before overwriting, automatic backups are created:
 ```
-lib/main.dart      → lib/main.dart.bak
-lib/screens/...    → lib/screens/....bak
+lib/main.dart           → lib/main.dart.bak
+lib/screens/foo.dart    → lib/screens/foo.dart.bak
 ```
 
-Restore with: `mv lib/main.dart.bak lib/main.dart`
+**Restore:** `mv lib/main.dart.bak lib/main.dart`
 
 ## 🔧 Dependencies
 
-### Automatically Added
-
-The tool patches `pubspec.yaml` with required dependencies:
+### Automatically Added to pubspec.yaml
 ```yaml
 dependencies:
   flutter:
     sdk: flutter
   
+  # Wireframe theme from pub.dev
+  wireframe_theme: ^1.0.4
+  
+  # State management
   provider: ^6.0.0
+  
+  # Persistent storage
   shared_preferences: ^2.0.0
-  wireframe_theme_flutter: ^1.0.0
   
-  # Optional (if Remix icons selected)
+  # iOS icons
+  cupertino_icons: ^1.0.8
+  
+  # Remix icons (if selected)
   remixicon: ^1.0.0
-  
-  # Optional (if monospace selected)
-  google_fonts: ^6.2.1
 
 flutter:
   uses-material-design: true
@@ -181,6 +318,8 @@ flutter:
 
 ### Material Icons (Default)
 ```dart
+import 'package:flutter/material.dart';
+
 class AppIcons {
   static const IconData dashboard = Icons.dashboard_outlined;
   static const IconData inbox = Icons.inbox_outlined;
@@ -194,8 +333,11 @@ class AppIcons {
 }
 ```
 
-### Remix Icons
+### Remix Icons (Optional)
 ```dart
+import 'package:flutter/widgets.dart';
+import 'package:remixicon/remixicon.dart';
+
 class AppIcons {
   static const IconData dashboard = Remix.dashboard_line;
   static const IconData inbox = Remix.inbox_line;
@@ -209,16 +351,22 @@ class AppIcons {
 }
 ```
 
-## 🏗️ Project Structure
+## 🏗️ Generated Code Structure
 
 ### main.dart
 ```dart
-Future<void> main() async {
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wireframe_theme/wireframe_theme.dart';
+
+import 'screens/home_screen.dart';
+
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  final theme = ThemeController(storageKey: 'app_isDarkMode');
+
+  final theme = ThemeController(storageKey: 'myapp_isDarkMode');
   await theme.init();
-  
+
   runApp(
     ChangeNotifierProvider.value(
       value: theme,
@@ -226,134 +374,187 @@ Future<void> main() async {
     ),
   );
 }
+
+class App extends StatelessWidget {
+  const App({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.watch();
+
+    return MaterialApp(
+      title: 'MyApp',
+      debugShowCheckedModeBanner: false,
+      theme: WireframeTheme.getTheme(false),
+      darkTheme: WireframeTheme.getTheme(true),
+      themeMode: theme.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      home: const HomeScreen(),
+    );
+  }
+}
 ```
 
-### State Management
-Uses Provider for theme state management:
+### State Management with Provider
 ```dart
 // Access theme state
-final theme = context.watch<ThemeController>();
+final theme = context.watch();
 
 // Toggle dark mode
-context.read<ThemeController>().toggle();
+context.read().toggle();
 
-// Check current mode
-if (theme.isDarkMode) { ... }
-```
-
-## 🎨 Customization
-
-### Changing Colors
-Edit `wireframe_theme_flutter` package or override in your app:
-```dart
-ThemeData customTheme = WireframeTheme.getTheme(false).copyWith(
-  primaryColor: Colors.blue,
-  scaffoldBackgroundColor: Color(0xFFF5F5F5),
-);
-```
-
-### Adding More Layouts
-Add new enum values and templates:
-```dart
-enum LayoutChoice { sidebar, bottomNav, grid, splitView, custom }
-
-String _customHomeTemplate({required String appTitle}) {
-  return '''
-  // Your custom layout here
-  ''';
-}
-```
-
-### Custom Icons
-Extend `AppIcons` class:
-```dart
-class AppIcons {
-  // ... existing icons
-  static const IconData custom = Icons.star;
-}
+// Set mode explicitly
+context.read().setDarkMode(true);
 ```
 
 ## 📱 Responsive Breakpoints
 
 | Layout | Breakpoint | Behavior |
 |--------|-----------|----------|
-| Sidebar | N/A | Always shows sidebar |
-| Bottom Nav | N/A | Always shows bottom nav |
-| Grid | 1100px | 4 → 3 → 2 → 1 columns |
-| Split View | 840px | Side-by-side ↔ Stack |
+| **Sidebar** | N/A | Always shows sidebar |
+| **Bottom Nav** | N/A | Always shows bottom bar |
+| **Grid** | 1100px / 800px / 520px | 4 → 3 → 2 → 1 columns |
+| **Split View** | 840px | Side-by-side ↔ Stack navigation |
+
+## 🔄 Recommended Workflow
+```bash
+# 1. Create Flutter project
+flutter create my_awesome_app
+cd my_awesome_app
+
+# 2. Install FLUX Wireframe CLI
+dart pub global activate flux_wireframe_theme_cli
+
+# 3. Check environment (optional)
+flux_wireframe doctor
+
+# 4. Run interactive setup
+flux_wireframe tour
+# OR use the menu
+flux_wireframe
+
+# 5. Install dependencies
+flutter pub get
+
+# 6. Run your app
+flutter run
+
+# 7. Check status anytime
+flux_wireframe status
+```
 
 ## 🐛 Troubleshooting
 
-### "Uses-material-design not found"
-Run: `flutter pub get`
+### Icons showing as squares
 
-### "Package not found"
-Ensure dependencies are added to `pubspec.yaml`:
+**Solution:**
 ```bash
-flutter pub add provider shared_preferences wireframe_theme_flutter
+flutter pub get
 ```
 
-### Font not applying
-1. Check `google_fonts` is in `pubspec.yaml`
-2. Run `flutter clean && flutter pub get`
-3. Restart app completely
+Verify `pubspec.yaml` has:
+```yaml
+flutter:
+  uses-material-design: true
+```
 
-### Icons showing as squares
-1. Verify `uses-material-design: true` in `pubspec.yaml`
-2. For Remix: Verify `remixicon` dependency
-3. Run `flutter pub get`
+### "Package not found"
 
-## 🔄 Version History
+**Solution:**
+The CLI automatically adds dependencies. If issues persist:
+```bash
+flutter clean
+flutter pub get
+```
 
-### v1.0.0 (Current)
-- ✅ Initial release
-- ✅ 4 layout options
-- ✅ Dark mode support
-- ✅ IBM Plex Mono integration
-- ✅ Material & Remix icon sets
-- ✅ Automatic pubspec patching
-- ✅ File backup system
+### Environment issues
+
+**Solution:**
+```bash
+flux_wireframe doctor
+```
+
+This will diagnose:
+- ✓ Flutter installation
+- ✓ Dart SDK
+- ✓ Project validity
+- ✓ Dependencies
+
+### Backup files cluttering project
+
+**Solution:**
+Delete `.bak` files manually:
+```bash
+# Unix/Mac
+find lib -name "*.bak" -delete
+
+# Windows
+del /s lib\*.bak
+```
+
+## 💡 Pro Tips
+
+1. **🔄 Start Fresh** - Run on a new `flutter create` project for best results
+2. **📝 Git First** - Commit before running to easily revert changes
+3. **🏥 Use Doctor** - Run `flux_wireframe doctor` to check environment
+4. **📊 Check Status** - Use `flux_wireframe status` for project overview
+5. **🎨 Experiment** - Try different layouts - backups protect you
+6. **📱 Mobile First** - Bottom nav is most mobile-friendly
+7. **🎯 Menu Mode** - Use `flux_wireframe` (no args) for guided experience
+
+## 🔗 Links
+
+- 📦 [wireframe_theme package](https://pub.dev/packages/wireframe_theme) - The theme package
+- 🛠️ [GitHub Repository](https://github.com/GLLB-Apps/flux_wireframe-tool-CLI) - Source code
+- 🐛 [Issue Tracker](https://github.com/GLLB-Apps/flux_wireframe-tool-CLI/issues) - Report bugs
+- 📚 [Flutter Docs](https://flutter.dev) - Flutter framework
+- 🎨 [Material Design](https://m3.material.io) - Design system
+- 🎯 [Remix Icon](https://remixicon.com) - Icon library
 
 ## 📄 License
 
-MIT License - feel free to use in personal and commercial projects.
+MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🤝 Contributing
 
-Contributions welcome! Areas for improvement:
+Contributions are welcome! Areas for improvement:
 
-- [ ] More layout options
-- [ ] Additional font choices
-- [ ] Color scheme variants
+- [ ] More layout options (drawer, tabs, etc.)
+- [ ] Additional theme variants
+- [ ] Color scheme customization
 - [ ] Animation presets
-- [ ] CLI flags for non-interactive mode
+- [ ] Custom component library
 - [ ] Testing suite
+- [ ] Video tutorials
 
-## 💡 Tips
-
-1. **Start Fresh**: Run on a new `flutter create` project for best results
-2. **Git First**: Commit before running to easily revert changes
-3. **Experiment**: Try different layouts and themes - backups protect you
-4. **Customize**: Use generated code as a starting point, not final product
-5. **Mobile First**: Bottom nav layout is most mobile-friendly
-
-## 🔗 Related Projects
-
-- [wireframe_theme_flutter](https://github.com/GLLB-Apps/wireframe_theme_flutter) - The theme package
-- [Flutter](https://flutter.dev) - The framework
-- [Material Design](https://m3.material.io) - Design system
-- [Remix Icon](https://remixicon.com) - Icon library
+**How to contribute:**
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
 
 ## 📞 Support
 
-Found a bug? Have a feature request?
+Need help?
 
-- Open an issue on GitHub
-- Contribute a pull request
-- Share your projects built with this tool!
+- 🐛 [Report a bug](https://github.com/GLLB-Apps/flux_wireframe-tool-CLI/issues)
+- 💬 [Start a discussion](https://github.com/GLLB-Apps/flux_wireframe-tool-CLI/discussions)
+- 📦 [View on pub.dev](https://pub.dev/packages/flux_wireframe_theme_cli)
+- ⭐ [Star on GitHub](https://github.com/GLLB-Apps/flux_wireframe-tool-CLI)
+
+## 🎯 Philosophy
+
+FLUX Wireframe CLI embraces:
+
+- ✨ **Minimalism** - Clean, focused interfaces
+- 🎯 **Consistency** - Predictable patterns across layouts
+- 📖 **Readability** - Monospace typography for clarity
+- 🔧 **Flexibility** - Easy to customize and extend
+- ⚡ **Speed** - Get productive in seconds, not hours
 
 ---
 
 **Built with ❤️ for the Flutter community**
 
 *Scaffold smarter, build faster.* 🚀
+
+**FLUX** - Flutter UI Experience CLI
