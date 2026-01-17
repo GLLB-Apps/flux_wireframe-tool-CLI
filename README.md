@@ -339,7 +339,7 @@ Contributions welcome! Areas for improvement:
 
 ## 🔗 Related Projects
 
-- [wireframe_theme_flutter](https://github.com/yourusername/wireframe_theme_flutter) - The theme package
+- [wireframe_theme_flutter](https://github.com/GLLB-Apps/wireframe_theme_flutter) - The theme package
 - [Flutter](https://flutter.dev) - The framework
 - [Material Design](https://m3.material.io) - Design system
 - [Remix Icon](https://remixicon.com) - Icon library
